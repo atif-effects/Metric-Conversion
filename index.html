@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert any unit instantly. Length, area, volume, temperature, mass and currency, free, fast and accurate.">
+    <meta name="theme-color" content="#333a56">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"/>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="./css/mediaquery.css">
+
+    <!-- AOS (Animate On Scroll) -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+
+     <title>Home</title>
+
+    <!-- If JavaScript is off, never leave AOS elements hidden -->
+    <noscript><style>[data-aos]{opacity:1!important;transform:none!important}</style></noscript>
+
+    <!-- =====================================================================
+         LANDING PAGE ENHANCEMENTS (internal styles, scoped to index.html only)
+         Loaded AFTER css/style.css and css/mediaquery.css so it can refine them
+         without touching either file. All original class names are untouched.
+         ===================================================================== -->
+    <style id="landing-enhancements">
+      /* ---------- Design tokens ---------- */
+      :root{
+        --lp-navy:#333a56;
+        --lp-navy-deep:#1c2140;
+        --lp-slate:#52658f;
+        --lp-ink:#252a44;
+        --lp-muted:#5b6785;
+        --lp-accent:#8aa2ff;
+        --lp-accent-2:#a78bfa;
+        --lp-accent-3:#5eead4;
+        --lp-grad:linear-gradient(135deg,#8aa2ff 0%,#a78bfa 55%,#5eead4 100%);
+        --lp-grad-brand:linear-gradient(135deg,#5b72e6 0%,#7a67f0 100%);
+        --lp-ease:cubic-bezier(.22,1,.36,1);
+      }
+
+      /* ---------- Base: smooth scrolling + soft aurora page backdrop ---------- */
+      html{scroll-behavior:smooth;scroll-padding-top:90px}
+      body{
+        background:#f3f5fb;
+        color:var(--lp-ink);
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale;
+        text-rendering:optimizeLegibility;
+        overflow-x:clip;
+      }
+      body::before{
+        content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+        background:
+          radial-gradient(900px 520px at 8% 12%,rgba(138,162,255,.20),transparent 62%),
+          radial-gradient(760px 520px at 94% 48%,rgba(167,139,250,.16),transparent 62%),
+          radial-gradient(700px 480px at 30% 100%,rgba(94,234,212,.12),transparent 60%);
+      }
+      :focus-visible{outline:2px solid var(--lp-accent);outline-offset:3px}
+
+      /* The old scroll-driven reveals on .block/.block1/.block3 are replaced by AOS
+         on this page (classes stay in the markup; only their animation is disabled
+         here so the two systems don't fight). */
+      body .block,body .block1,body .block2,body .block3{animation:none}
+
+      /* ---------- AOS tuning ---------- */
+      body [data-aos=fade-up]{transform:translate3d(0,34px,0)}
+      body [data-aos=zoom-in]{transform:scale(.94)}
+      /* Once an element has finished entering, give it snappy hover transitions */
+      body [data-aos].aos-settled{
+        transition-delay:0s!important;
+        transition-duration:.45s!important;
+        transition-timing-function:var(--lp-ease)!important;
+        transition-property:opacity,transform,box-shadow,border-color,background-color;
+      }
+
+      /* ---------- Scroll progress bar (was a hidden 75px block behind the navbar) ---------- */
+      body .scroll-watcher{
+        height:3px;z-index:1000;pointer-events:none;
+        background:var(--lp-grad);
+        box-shadow:0 0 14px rgba(138,162,255,.85);
+      }
+
+      /* =====================================================================
+         NAVBAR: glass on scroll, animated underlines, glass dropdown
+         (blur lives on a pseudo-element so the mobile fixed sidebar keeps working)
+         ===================================================================== */
+      nav{
+        border-bottom:1px solid transparent;
+        transition:background-color .4s var(--lp-ease),box-shadow .4s var(--lp-ease),border-color .4s var(--lp-ease);
+      }
+      nav::before{
+        content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;
+        -webkit-backdrop-filter:blur(18px) saturate(170%);
+        backdrop-filter:blur(18px) saturate(170%);
+        transition:opacity .4s var(--lp-ease);
+      }
+      nav.is-scrolled{
+        background:rgba(35,40,70,.62);
+        border-bottom-color:rgba(255,255,255,.10);
+        box-shadow:0 12px 40px -14px rgba(8,12,34,.6);
+      }
+      nav.is-scrolled::before{opacity:1}
+
+      nav .navbar .links li a:hover{color:#fff}
+      nav .navbar .links>li>a{position:relative;display:inline-block}
+      nav .navbar .links>li>a::after{
+        content:"";position:absolute;left:0;bottom:20px;width:100%;height:2px;border-radius:2px;
+        background:var(--lp-grad);
+        transform:scaleX(0);transform-origin:right;
+        transition:transform .35s var(--lp-ease);
+      }
+      nav .navbar .links>li>a:hover::after,
+      nav .navbar .links>li:hover>a::after{transform:scaleX(1);transform-origin:left}
+      .navbar .bx-menu{transition:transform .3s var(--lp-ease)}
+      .navbar .bx-menu:hover{transform:scale(1.15)}
+
+      @media (min-width:801px){
+        nav .navbar .links li .bottle{
+          top:74px;min-width:190px;padding:8px;
+          background:rgba(33,38,66,.88);
+          -webkit-backdrop-filter:blur(16px) saturate(160%);
+          backdrop-filter:blur(16px) saturate(160%);
+          border:1px solid rgba(255,255,255,.10);
+          border-radius:16px;
+          box-shadow:0 24px 60px -18px rgba(5,8,25,.65);
+          transform-origin:top left;
+        }
+        /* invisible bridge so the menu doesn't close while the cursor crosses the gap */
+        nav .navbar .links li .bottle::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+        nav .navbar .links li:hover .faraz{animation:lp-drop .28s var(--lp-ease) both}
+        .navbar .links li .bottle li{display:block;padding:0;border-bottom:0}
+        .navbar .links li .bottle a{
+          display:block;padding:0 14px;border-radius:10px;line-height:40px;
+          transition:background .25s,color .25s,padding-left .25s var(--lp-ease);
+        }
+        .navbar .links li .bottle a:hover{background:rgba(138,162,255,.16);color:#fff;padding-left:20px}
+        nav .navbar .links li .bottle a::after{display:none}
+      }
+      @media (max-width:800px){
+        nav .navbar .links>li>a::after{bottom:4px}
+        .navbar .nav-links.show3 .links .faraz{animation:lp-drop .28s var(--lp-ease) both}
+      }
+
+      /* =====================================================================
+         HERO: gradient aurora, frosted glass panel, floating chips, parallax
+         ===================================================================== */
+      body .homeheader{
+        display:flex;align-items:center;justify-content:center;
+        overflow:hidden;isolation:isolate;
+        min-height:calc(100vh - 70px);
+        min-height:calc(100svh - 70px);
+      }
+      body .homeheader::before{
+        content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+        background-image:
+          linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+          linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+        background-size:56px 56px;
+        -webkit-mask-image:radial-gradient(ellipse at center,#000 25%,transparent 75%);
+        mask-image:radial-gradient(ellipse at center,#000 25%,transparent 75%);
+      }
+      body .homeheader::after{
+        content:"";position:absolute;inset:auto 0 0 0;height:32%;z-index:0;pointer-events:none;
+        background:linear-gradient(to top,rgba(10,14,35,.6),transparent);
+      }
+
+      .hero-aurora{position:absolute;inset:0;z-index:0;pointer-events:none}
+      .hero-orb{
+        position:absolute;border-radius:50%;
+        translate:calc(var(--px,0)*var(--d,40)*1px) calc(var(--py,0)*var(--d,40)*1px + var(--sy,0)*var(--s,-.1)*1px);
+      }
+      .orb-a{
+        width:min(52vw,640px);aspect-ratio:1;top:-14%;left:-10%;--d:-38;--s:-.12;
+        background:radial-gradient(circle,rgba(138,162,255,.55),rgba(138,162,255,0) 65%);
+        animation:lp-orb 16s ease-in-out infinite alternate;
+      }
+      .orb-b{
+        width:min(46vw,560px);aspect-ratio:1;top:8%;right:-12%;--d:46;--s:-.2;
+        background:radial-gradient(circle,rgba(167,139,250,.5),rgba(167,139,250,0) 65%);
+        animation:lp-orb 19s ease-in-out infinite alternate-reverse;
+      }
+      .orb-c{
+        width:min(40vw,480px);aspect-ratio:1;bottom:-18%;left:34%;--d:-24;--s:-.06;
+        background:radial-gradient(circle,rgba(94,234,212,.35),rgba(94,234,212,0) 65%);
+        animation:lp-orb 22s ease-in-out infinite alternate;
+      }
+
+      .hero-float{
+        position:absolute;z-index:1;pointer-events:none;
+        translate:calc(var(--px,0)*var(--d,30)*1px) calc(var(--py,0)*var(--d,30)*1px);
+      }
+      .hero-float span{
+        display:block;padding:10px 16px;border-radius:16px;white-space:nowrap;
+        font-size:.85rem;color:#dfe6ff;
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(255,255,255,.18);
+        -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+        box-shadow:0 18px 40px -18px rgba(0,0,0,.6);
+        animation:lp-floaty 7s ease-in-out infinite;
+      }
+      .hero-float b{color:#fff;font-weight:600}
+      .hf-1{top:22%;left:6%;--d:-34}
+      .hf-2{top:30%;right:6%;--d:30}
+      .hf-2 span{animation-delay:-2s}
+      .hf-3{bottom:22%;left:10%;--d:22}
+      .hf-3 span{animation-delay:-4s}
+      .hf-4{bottom:17%;right:9%;--d:-28}
+      .hf-4 span{animation-delay:-1s}
+
+      body .hero-section{
+        position:relative;z-index:2;width:100%;
+        padding:70px 20px 110px;
+      }
+      body .hero-section .hero-content{
+        position:relative;width:100%;max-width:880px;margin:0 auto;
+        padding:clamp(32px,5vw,64px) clamp(22px,4vw,60px);
+        border-radius:36px;
+        background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.03));
+        border:1px solid rgba(255,255,255,.14);
+        -webkit-backdrop-filter:blur(22px) saturate(150%);
+        backdrop-filter:blur(22px) saturate(150%);
+        box-shadow:0 40px 120px -30px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.22);
+      }
+      body .hero-section .hero-content::before{
+        content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+        background:linear-gradient(160deg,rgba(255,255,255,.55),rgba(255,255,255,0) 35%,rgba(138,162,255,.45) 100%);
+        -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+        -webkit-mask-composite:xor;mask-composite:exclude;
+      }
+
+      .hero-badge{
+        display:inline-flex;align-items:center;gap:10px;
+        padding:7px 16px 7px 12px;margin-bottom:26px;border-radius:999px;
+        font-size:.82rem;font-weight:500;letter-spacing:.02em;color:#dbe3ff;
+        background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);
+      }
+      .hero-badge .dot{
+        width:8px;height:8px;border-radius:50%;background:var(--lp-accent-3);
+        animation:lp-pulse 2s infinite;
+      }
+
+      body .hero-section .hero-content h1{
+        margin:0;
+        font-size:clamp(2.3rem,6vw,4.4rem);
+        font-weight:800;line-height:1.06;letter-spacing:-.03em;color:#fff;
+        text-shadow:0 8px 40px rgba(0,0,0,.35);
+      }
+      body .hero-section .hero-content h1 span{
+        background:linear-gradient(100deg,#b9c7ff 0%,#8aa2ff 30%,#c4b5fd 60%,#5eead4 100%);
+        background-size:200% auto;
+        -webkit-background-clip:text;background-clip:text;
+        -webkit-text-fill-color:transparent;color:transparent;
+        animation:lp-shine 7s linear infinite;
+        -webkit-box-decoration-break:clone;box-decoration-break:clone;
+      }
+      body .hero-section .hero-content p{
+        max-width:620px;margin:24px auto 0;
+        font-size:clamp(1rem,1.7vw,1.2rem);font-weight:300;line-height:1.75;
+        color:rgba(255,255,255,.80);
+      }
+      .hero-content>a[data-aos]{display:inline-block}
+
+      body .hero-section .button44.type1{
+        width:auto;min-width:200px;height:56px;margin:34px 0 0;padding:0 36px;
+        position:relative;isolation:isolate;overflow:hidden;
+        display:inline-flex;align-items:center;justify-content:center;gap:0;
+        color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:999px;
+        background:linear-gradient(120deg,#5b72e6 0%,#7a67f0 55%,#5b72e6 100%);
+        background-size:200% 100%;
+        box-shadow:0 14px 40px -10px rgba(122,103,240,.85),0 0 60px -12px rgba(138,162,255,.7),inset 0 1px 0 rgba(255,255,255,.35);
+        transition:transform .4s var(--lp-ease),box-shadow .4s var(--lp-ease),background-position .6s var(--lp-ease);
+      }
+      body .hero-section .button44.type1::after{
+        content:"";position:absolute;inset:0;left:0;top:0;width:auto;height:auto;
+        border-radius:inherit;visibility:visible;z-index:-1;transform:none;
+        background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);
+        background-size:250% 100%;background-position:150% 0;
+        transition:background-position .9s var(--lp-ease);
+      }
+      body .hero-section .button44.type1:hover{
+        transform:translateY(-4px) scale(1.03);
+        background-position:100% 0;border:1px solid rgba(255,255,255,.4);
+        box-shadow:0 22px 54px -10px rgba(122,103,240,.95),0 0 80px -8px rgba(138,162,255,.85),inset 0 1px 0 rgba(255,255,255,.45);
+      }
+      body .hero-section .button44.type1:hover::after{
+        visibility:visible;transform:none;background-position:-50% 0;
+      }
+      body .hero-section .button44.type1:active{transform:translateY(-1px) scale(.99)}
+      body .hero-section .button44 .btn-txt,
+      body .hero-section .button44:hover .btn-txt{
+        color:#fff;font-size:1rem;font-weight:700;letter-spacing:.04em;
+      }
+      body .hero-section .button44 svg{
+        width:18px;height:18px;margin-left:10px;stroke-width:2.4;
+        transition:transform .35s var(--lp-ease);
+      }
+      body .hero-section .button44:hover svg{transform:translateX(5px)}
+
+      .hero-chips{
+        list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:30px;
+      }
+      .hero-chips li{
+        display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;
+        font-size:.85rem;font-weight:500;color:#dfe6ff;
+        background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+        transition:transform .35s var(--lp-ease),background .35s,border-color .35s;
+      }
+      .hero-chips li:hover{transform:translateY(-3px);background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
+      .hero-chips svg{width:15px;height:15px;color:var(--lp-accent-3);stroke-width:2.8}
+
+      .hero-scroll{
+        position:absolute;z-index:3;bottom:26px;left:50%;margin-left:-13px;
+        width:26px;height:42px;border:2px solid rgba(255,255,255,.45);border-radius:20px;
+        transition:border-color .3s,transform .3s var(--lp-ease);
+      }
+      .hero-scroll:hover{border-color:#fff;transform:translateY(3px)}
+      .hero-scroll span{
+        position:absolute;top:8px;left:50%;width:4px;height:8px;margin-left:-2px;border-radius:2px;background:#fff;
+        animation:lp-wheel 1.8s ease-in-out infinite;
+      }
+
+      /* =====================================================================
+         SECTION 1: "Why Our Converter?" bento grid
+         ===================================================================== */
+      body .sec1{
+        max-width:100%;margin:110px auto 0;padding:0;scroll-margin-top:90px;
+      }
+      body .sec1 .box1{
+        position:relative;overflow:hidden;
+        width:min(1120px,92%);height:auto;
+        padding:clamp(28px,5vw,60px) clamp(18px,4vw,56px);
+        border-radius:36px;text-align:center;
+        background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.62));
+        border:1px solid rgba(255,255,255,.95);
+        -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+        box-shadow:0 40px 90px -40px rgba(51,58,86,.45),0 0 0 1px rgba(51,58,86,.06);
+      }
+      body .sec1 .box1::before{
+        content:"";position:absolute;top:-160px;right:-120px;width:420px;height:420px;border-radius:50%;pointer-events:none;
+        background:radial-gradient(circle,rgba(138,162,255,.28),transparent 65%);
+      }
+      body .sec1 .box1::after{
+        content:"";position:absolute;bottom:-180px;left:-120px;width:420px;height:420px;border-radius:50%;pointer-events:none;
+        background:radial-gradient(circle,rgba(167,139,250,.20),transparent 65%);
+      }
+
+      body .box1 .view{
+        position:relative;z-index:1;
+        display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:20px;
+      }
+      body .box1 .view>.block{grid-column:span 2;display:flex;flex-direction:column}
+      body .box1 .view>.block:nth-child(2),
+      body .box1 .view>.block:nth-child(3){grid-column:span 3}
+      body .box1 .view>.block:first-child,
+      body .box1 .view>.block:last-child{grid-column:1/-1}
+
+      body .box1 .view h1{
+        margin:0 0 14px;text-align:center;
+        font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;
+        background:linear-gradient(135deg,#333a56 0%,#52658f 55%,#7b8fe0 100%);
+        -webkit-background-clip:text;background-clip:text;
+        -webkit-text-fill-color:transparent;color:transparent;
+      }
+
+      /* shared icon tile */
+      .fx-ic{
+        display:inline-grid;place-items:center;flex:none;
+        width:50px;height:50px;margin-bottom:16px;border-radius:15px;
+        color:#4f63d6;
+        background:linear-gradient(135deg,rgba(138,162,255,.20),rgba(167,139,250,.20));
+        border:1px solid rgba(138,162,255,.35);
+        transition:transform .45s var(--lp-ease),background .45s,color .45s,box-shadow .45s;
+      }
+      .fx-ic svg{width:23px;height:23px;stroke-width:1.9}
+
+      body .box1 .hdg1{
+        position:relative;overflow:hidden;flex:1;
+        width:100%;height:auto;margin:0;padding:28px 26px 26px;
+        text-align:left;border-radius:22px;
+        background:rgba(255,255,255,.84);
+        border:1px solid rgba(51,58,86,.08);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 14px 40px -26px rgba(51,58,86,.5);
+        transition:transform .5s var(--lp-ease),box-shadow .5s var(--lp-ease),border-color .5s var(--lp-ease);
+      }
+      body .box1 .hdg1:hover{
+        transform:translateY(-8px);
+        border-color:rgba(138,162,255,.55);
+        box-shadow:0 0 0 1px rgba(138,162,255,.35),0 30px 60px -22px rgba(82,101,143,.6),0 0 44px -10px rgba(138,162,255,.5);
+      }
+      body .box1 .hdg1:hover .fx-ic{
+        transform:scale(1.1) rotate(-5deg);color:#fff;background:var(--lp-grad-brand);
+        border-color:transparent;box-shadow:0 12px 26px -8px rgba(91,114,230,.8);
+      }
+      body .box1 .hdg1 h2{
+        margin:0 0 8px;padding:0;text-align:left;
+        font-size:1.15rem;font-weight:600;color:var(--lp-navy);
+      }
+      body .box1 .hdg1 p{
+        text-align:left;font-size:.96rem;line-height:1.7;color:var(--lp-muted);
+      }
+
+      /* cursor-following spotlight (shared by feature tiles, steps and cards) */
+      body .box1 .hdg1::before,
+      body .hdg2 .a::before,
+      body .container :is(.card,.card1,.card2,.card11)::before{
+        content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+        opacity:0;transition:opacity .4s;
+        background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(138,162,255,.22),transparent 60%);
+      }
+      body .box1 .hdg1:hover::before,
+      body .hdg2 .a:hover::before,
+      body .container :is(.card,.card1,.card2,.card11):hover::before{opacity:1}
+      body .box1 .hdg1 :is(h2,p,.fx-ic),
+      body .hdg2 .a :is(h3,p,.fx-ic),
+      body .container :is(.card,.card1,.card2,.card11) :is(h2,p,.fx-ic){position:relative;z-index:1}
+
+      /* CTA button in section 1 */
+      body .box1 .view .block button{
+        align-self:center;width:auto;margin:14px 0 0;padding:0;
+        border:0;border-radius:999px;cursor:pointer;
+        background:linear-gradient(120deg,#5b72e6,#7a67f0);
+        box-shadow:0 16px 38px -12px rgba(91,114,230,.8),inset 0 1px 0 rgba(255,255,255,.35);
+        transition:transform .4s var(--lp-ease),box-shadow .4s var(--lp-ease);
+      }
+      body .box1 .view .block button:hover{
+        transform:translateY(-4px);
+        box-shadow:0 24px 50px -12px rgba(91,114,230,.95),0 0 40px -6px rgba(167,139,250,.7),inset 0 1px 0 rgba(255,255,255,.45);
+      }
+      body .box1 .view .block button:active{transform:translateY(-1px)}
+      body .box1 .view .block button a{
+        display:inline-flex;align-items:center;gap:10px;padding:16px 34px;
+        color:#fff;font-size:1.05rem;font-weight:600;list-style:none;text-decoration:none;
+      }
+      body .box1 .view .block button i{transition:transform .35s var(--lp-ease)}
+      body .box1 .view .block button:hover i{transform:translateX(6px)}
+      body .box1 .view .block button i:hover{padding-left:0}
+
+      /* =====================================================================
+         SECTION HEADINGS (shared by "How it Works" and "Our Demo Tool")
+         ===================================================================== */
+      body .sec2H,body .sec2H1{
+        display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(14px,3vw,30px);
+        width:min(1120px,92%);margin:110px auto 0;
+        text-align:center;font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;letter-spacing:-.02em;
+        background:linear-gradient(135deg,#333a56 0%,#52658f 55%,#7b8fe0 100%);
+        -webkit-background-clip:text;background-clip:text;
+        -webkit-text-fill-color:transparent;color:transparent;
+      }
+      body .sec2H::before,body .sec2H1::before{
+        content:"";display:block;height:2px;border-radius:2px;
+        background:linear-gradient(90deg,transparent,rgba(82,101,143,.6));
+      }
+      body .sec2H::after,body .sec2H1::after{
+        content:"";display:block;height:2px;border-radius:2px;
+        background:linear-gradient(90deg,rgba(82,101,143,.6),transparent);
+      }
+
+      /* =====================================================================
+         SECTION 2: "How it Works"
+         ===================================================================== */
+      body .sec2{margin-top:44px}
+      body .hdg2{
+        display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch;
+        width:min(1120px,92%);height:auto;margin:0 auto;
+      }
+      body .hdg2 .a{
+        position:relative;overflow:hidden;
+        width:auto;height:auto;padding:44px 30px 34px;
+        text-align:left;border-radius:26px;
+        background:rgba(255,255,255,.74);
+        border:1px solid rgba(51,58,86,.08);
+        -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 18px 50px -26px rgba(51,58,86,.45);
+      }
+      body .hdg2 .a:hover{
+        transform:translateY(-8px);
+        border-color:rgba(138,162,255,.55);
+        box-shadow:0 0 0 1px rgba(138,162,255,.32),0 34px 70px -24px rgba(82,101,143,.6),0 0 46px -10px rgba(138,162,255,.5);
+      }
+      body .hdg2 .a:hover .fx-ic{
+        transform:scale(1.1) rotate(-5deg);color:#fff;background:var(--lp-grad-brand);
+        border-color:transparent;box-shadow:0 12px 26px -8px rgba(91,114,230,.8);
+      }
+      body .hdg2 .a::after{
+        content:"";position:absolute;left:30px;right:30px;bottom:0;height:3px;border-radius:3px;
+        background:var(--lp-grad);
+        transform:scaleX(0);transform-origin:left;
+        transition:transform .55s var(--lp-ease);
+      }
+      body .hdg2 .a:hover::after{transform:scaleX(1)}
+      body .hdg2 .a .step-no{
+        position:absolute;top:14px;right:22px;z-index:1;
+        font-size:4.2rem;font-weight:800;line-height:1;letter-spacing:-.04em;
+        color:transparent;-webkit-text-stroke:1.5px rgba(82,101,143,.24);
+        transition:-webkit-text-stroke-color .4s;
+      }
+      body .hdg2 .a:hover .step-no{-webkit-text-stroke-color:rgba(138,162,255,.7)}
+      body .hdg2 .a h3{
+        margin:0;padding:0;text-align:left;
+        font-size:1.3rem;font-weight:700;color:var(--lp-navy);
+      }
+      body .hdg2 .a p{
+        width:100%;margin:12px 0 0;text-align:left;
+        font-size:.98rem;line-height:1.75;color:var(--lp-muted);
+      }
+
+      /* =====================================================================
+         FEATURE CARDS (image cards with glow borders)
+         ===================================================================== */
+      body .container{
+        display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;
+        width:min(1120px,92%);margin:110px auto 0;padding:0;
+      }
+      body .container>.block1,
+      body .container>.block3{display:flex}
+      body .container :is(.card,.card1,.card2,.card11){
+        position:relative;overflow:hidden;flex:1;
+        display:flex;flex-direction:column;justify-content:flex-end;
+        width:auto;height:auto;min-height:250px;margin:0;padding:32px;
+        border-radius:28px;background-attachment:scroll;
+        box-shadow:0 24px 60px -30px rgba(28,33,64,.8);
+        transition:transform .5s var(--lp-ease),box-shadow .5s var(--lp-ease);
+      }
+      body .container :is(.card,.card1,.card2,.card11)::after{
+        content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+        background:linear-gradient(135deg,rgba(255,255,255,.4),rgba(138,162,255,.12) 40%,rgba(167,139,250,.45));
+        -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+        -webkit-mask-composite:xor;mask-composite:exclude;
+        transition:opacity .4s;
+      }
+      body .container :is(.card,.card1,.card2,.card11):hover{
+        transform:translateY(-8px);
+        box-shadow:0 36px 80px -24px rgba(138,162,255,.55),0 0 0 1px rgba(138,162,255,.45),0 0 60px -14px rgba(167,139,250,.6);
+      }
+      body .container :is(.card,.card1,.card2,.card11) .fx-ic{
+        align-self:flex-start;margin-bottom:auto;color:#cdd7ff;
+        background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.22);
+      }
+      body .container :is(.card,.card1,.card2,.card11):hover .fx-ic{
+        transform:scale(1.1) rotate(-5deg);color:#fff;background:var(--lp-grad-brand);
+        border-color:transparent;box-shadow:0 12px 26px -8px rgba(91,114,230,.8);
+      }
+      body .container :is(.card,.card1,.card2,.card11) h2{
+        padding:0;margin:0 0 8px;font-size:1.4rem;font-weight:700;letter-spacing:-.01em;color:#fff;
+      }
+      body .container :is(.card,.card1,.card2,.card11) p{
+        padding:0;font-size:.98rem;line-height:1.65;color:rgba(255,255,255,.78);
+      }
+
+      /* =====================================================================
+         DEMO TOOL: interactive glass dashboard
+         ===================================================================== */
+      body .boss{
+        position:relative;isolation:isolate;overflow:hidden;
+        display:flex;align-items:center;justify-content:center;
+        width:min(1120px,92%);margin:40px auto 0;
+        padding:clamp(40px,7vw,84px) clamp(16px,4vw,48px);
+        border-radius:36px;
+        background:linear-gradient(135deg,#1f2447 0%,#2b3260 50%,#1d2342 100%);
+        box-shadow:0 40px 90px -30px rgba(28,33,64,.75);
+      }
+      body .boss::before{
+        content:"";position:absolute;z-index:-1;width:560px;height:560px;top:-200px;left:-140px;border-radius:50%;
+        background:radial-gradient(circle,rgba(138,162,255,.6),transparent 65%);
+        animation:lp-orb 14s ease-in-out infinite alternate;
+      }
+      body .boss::after{
+        content:"";position:absolute;z-index:-1;width:520px;height:520px;bottom:-200px;right:-120px;border-radius:50%;
+        background:radial-gradient(circle,rgba(167,139,250,.55),rgba(94,234,212,.18) 45%,transparent 68%);
+        animation:lp-orb 18s ease-in-out infinite alternate-reverse;
+      }
+
+      body .boss .car{
+        position:relative;width:min(760px,100%);height:auto;margin:0;
+        padding:clamp(52px,6vw,60px) clamp(20px,3.4vw,36px) clamp(22px,3.4vw,36px);
+        border-radius:28px;
+        background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,.05));
+        border:1px solid rgba(255,255,255,.20);
+        -webkit-backdrop-filter:blur(22px) saturate(160%);
+        backdrop-filter:blur(22px) saturate(160%);
+        box-shadow:0 30px 80px -24px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.3);
+      }
+      body .boss .car::before{
+        content:"";position:absolute;top:22px;left:26px;width:10px;height:10px;border-radius:50%;
+        background:#ff5f57;box-shadow:18px 0 0 #febc2e,36px 0 0 #28c840;opacity:.9;
+      }
+
+      body .car #heading1{
+        margin:0;display:flex;align-items:center;justify-content:center;gap:12px;
+        font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;letter-spacing:-.01em;color:#fff;
+      }
+      body .car #heading1::before{
+        content:"";width:9px;height:9px;border-radius:50%;background:var(--lp-accent-3);
+        animation:lp-pulse 2s infinite;
+      }
+
+      body .car .contentt{
+        display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:clamp(10px,2vw,22px);
+        width:100%;margin:26px 0 0;padding:clamp(16px,2.6vw,26px);
+        border:1px solid rgba(255,255,255,.14);border-radius:22px;
+        background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+      }
+      body .car .contentt1{display:block;text-align:left}
+      body .car .contentt1:nth-child(2){text-align:center}
+      body .car .contentt1 br{display:none}
+      body .car .contentt1 label{
+        display:block;margin-bottom:8px;
+        font-size:.72rem;font-weight:600;letter-spacing:.16em;color:#aebaf0;
+      }
+      body .car .contentt1 h1{
+        display:grid;place-items:center;width:46px;height:46px;margin:0;border-radius:50%;
+        font-size:1.4rem;line-height:1;color:#fff;
+        background:linear-gradient(135deg,#8aa2ff,#a78bfa);
+        box-shadow:0 10px 26px -6px rgba(138,162,255,.75);
+      }
+      body .car .contentt .contentt2{
+        width:100%;max-width:none;margin:0;padding:14px 16px;
+        font-size:clamp(1.15rem,2.4vw,1.55rem);font-weight:600;font-variant-numeric:tabular-nums;
+        text-align:center;color:#fff;caret-color:var(--lp-accent);
+        background:rgba(9,13,34,.5);
+        border:1px solid rgba(255,255,255,.16);border-radius:14px;outline:none;
+        -moz-appearance:textfield;appearance:textfield;
+        transition:border-color .3s,box-shadow .3s,background .3s;
+      }
+      body .car .contentt .contentt2::-webkit-outer-spin-button,
+      body .car .contentt .contentt2::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+      body .car .contentt .contentt2:hover{border-color:rgba(138,162,255,.55)}
+      body .car .contentt .contentt2:focus{
+        border-color:var(--lp-accent);background:rgba(9,13,34,.72);
+        animation:lp-ring 2.4s ease-in-out infinite;
+      }
+
+      /* select styling (for any <select> used inside the dashboard) */
+      body .car select{
+        width:100%;margin:0;padding:12px 14px;font-size:1rem;font-weight:500;color:#fff;
+        background:rgba(9,13,34,.5);border:1px solid rgba(255,255,255,.16);border-radius:12px;outline:none;
+        transition:border-color .3s,box-shadow .3s;
+      }
+      body .car select:focus{border-color:var(--lp-accent);box-shadow:0 0 0 4px rgba(138,162,255,.22)}
+
+      .demo-presets{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px}
+      body .demo-presets button{
+        width:auto;margin:0;padding:9px 18px;cursor:pointer;
+        font-size:.88rem;font-weight:600;color:#dbe3ff;
+        background:rgba(255,255,255,.07);
+        border:1px solid rgba(255,255,255,.16);border-radius:999px;
+        transition:transform .35s var(--lp-ease),background .3s,border-color .3s,color .3s,box-shadow .3s;
+      }
+      body .demo-presets button:hover{
+        transform:translateY(-3px);color:#fff;
+        background:rgba(138,162,255,.22);border-color:rgba(138,162,255,.65);
+      }
+      body .demo-presets button:active{transform:translateY(-1px)}
+      body .demo-presets button.is-active{
+        color:#fff;border-color:transparent;
+        background:var(--lp-grad-brand);
+        box-shadow:0 10px 26px -8px rgba(122,103,240,.9);
+      }
+      body .demo-presets button:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+      .demo-result{
+        display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;
+        margin-top:22px;padding:16px 20px;border-radius:16px;
+        background:rgba(9,13,34,.45);border:1px dashed rgba(255,255,255,.22);
+      }
+      .demo-result span{
+        font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#aebaf0;
+      }
+      .demo-result strong{
+        display:inline-block;font-size:clamp(1.05rem,2.4vw,1.35rem);font-weight:700;
+        background:linear-gradient(90deg,#fff,#b9c7ff);
+        -webkit-background-clip:text;background-clip:text;
+        -webkit-text-fill-color:transparent;color:transparent;
+      }
+      .demo-result strong.pop{animation:lp-pop .35s var(--lp-ease)}
+
+      /* =====================================================================
+         FOOTER: glow line, glass social icons, better contrast
+         ===================================================================== */
+      body .mainfooter69{
+        position:relative;overflow:hidden;
+        margin-top:130px;padding:0 clamp(24px,6vw,100px);
+        border-radius:44px 44px 0 0;
+        background:
+          radial-gradient(700px 300px at 85% -10%,rgba(138,162,255,.24),transparent 70%),
+          radial-gradient(600px 300px at 5% 110%,rgba(167,139,250,.18),transparent 70%),
+          linear-gradient(180deg,#2d3453 0%,#1f2441 100%);
+      }
+      body .mainfooter69::before{
+        content:"";position:absolute;top:0;left:6%;right:6%;height:1px;
+        background:linear-gradient(90deg,transparent,#8aa2ff,#a78bfa,#5eead4,#8aa2ff,transparent);
+        background-size:200% 100%;
+        box-shadow:0 0 22px 2px rgba(138,162,255,.55);
+        animation:lp-line 6s linear infinite;
+      }
+      body .mainfooter69 .topfooter69,
+      body .mainfooter69 .bottomfooter{position:relative;z-index:1}
+      body .mainfooter69 .logotitle{
+        font-size:clamp(1.6rem,3vw,2rem);font-weight:800;letter-spacing:-.02em;
+        background:linear-gradient(100deg,#fff,#b9c7ff 60%,#a78bfa);
+        -webkit-background-clip:text;background-clip:text;
+        -webkit-text-fill-color:transparent;color:transparent;
+      }
+      body .mainfooter69 .logobox69 p,
+      body .mainfooter69 .newslettermessage{color:#c9d2f2;line-height:1.7}
+      body .mainfooter69 .labelfear69{color:#fff;letter-spacing:.02em}
+      body .mainfooter69 .labelfear69::before{
+        width:60%;border-radius:2px;background:var(--lp-grad);
+      }
+      body .mainfooter69 .menubox6969 a{color:#d3daf3}
+      body .mainfooter69 .menubox6969 a:hover{left:6px;color:#fff}
+
+      body .emailinput69{
+        background-color:rgba(255,255,255,.08);color:#fff;
+        border:1px solid rgba(255,255,255,.18);
+        transition:border-color .3s,box-shadow .3s,background-color .3s;
+      }
+      body .emailinput69::placeholder{color:#9aa6d0}
+      body .emailinput69:focus{
+        border-color:var(--lp-accent);background-color:rgba(255,255,255,.12);
+        box-shadow:0 0 0 4px rgba(138,162,255,.22),0 0 26px rgba(138,162,255,.3);
+      }
+      body .sendbtn69{
+        margin:0;padding:0;color:#fff;
+        background:var(--lp-grad-brand);
+        transition:transform .3s var(--lp-ease),box-shadow .3s,filter .3s;
+      }
+      body .sendbtn69:hover{
+        background:var(--lp-grad-brand);color:#fff;
+        transform:translateX(2px);filter:brightness(1.12);
+        box-shadow:0 10px 26px -8px rgba(122,103,240,.95);
+      }
+
+      body .bottomfooter{border-top:1px solid rgba(255,255,255,.10)}
+      body .copyrighttxt69{color:#c9d2f2}
+      body .socialmedia{margin-top:0}
+      body .hell{transform:none}
+      body .hell li a{
+        display:grid;place-items:center;font-size:16px;
+        background-color:rgba(255,255,255,.07);
+        border:1px solid rgba(255,255,255,.16);
+        transition:transform .4s var(--lp-ease),box-shadow .4s,border-color .4s;
+      }
+      body .hell li a:hover{transform:translateY(-5px);border-color:transparent}
+      body .hell li:nth-child(1) a:hover{box-shadow:0 12px 28px -6px rgba(59,89,153,.95)}
+      body .hell li:nth-child(2) a:hover{box-shadow:0 12px 28px -6px rgba(85,172,238,.95)}
+      body .hell li:nth-child(3) a:hover{box-shadow:0 12px 28px -6px rgba(0,119,181,.95)}
+      body .hell li:nth-child(4) a:hover{box-shadow:0 12px 28px -6px rgba(221,75,57,.95)}
+
+      /* =====================================================================
+         KEYFRAMES
+         ===================================================================== */
+      @keyframes lp-floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+      @keyframes lp-orb{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(40px,30px,0) scale(1.12)}}
+      @keyframes lp-shine{to{background-position:200% center}}
+      @keyframes lp-drop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+      @keyframes lp-wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+      @keyframes lp-pulse{0%{box-shadow:0 0 0 0 rgba(94,234,212,.65)}70%{box-shadow:0 0 0 9px rgba(94,234,212,0)}100%{box-shadow:0 0 0 0 rgba(94,234,212,0)}}
+      @keyframes lp-pop{0%{transform:scale(.94);opacity:.5}100%{transform:scale(1);opacity:1}}
+      @keyframes lp-ring{
+        0%,100%{box-shadow:0 0 0 4px rgba(138,162,255,.22),0 0 28px rgba(138,162,255,.30)}
+        50%{box-shadow:0 0 0 7px rgba(138,162,255,.12),0 0 40px rgba(167,139,250,.40)}
+      }
+      @keyframes lp-line{to{background-position:200% 0}}
+
+      /* =====================================================================
+         RESPONSIVE (placed last so it wins over the legacy mediaquery.css values)
+         ===================================================================== */
+      @media (max-width:1180px){
+        .hero-float{display:none}
+      }
+      @media (max-width:1024px){
+        body .homeheader{background-attachment:scroll}
+      }
+      @media (max-width:960px){
+        body .box1 .view{grid-template-columns:repeat(2,minmax(0,1fr))}
+        body .box1 .view>.block:nth-child(n){grid-column:auto}
+        body .box1 .view>.block:first-child,
+        body .box1 .view>.block:last-child,
+        body .box1 .view>.block:nth-child(6){grid-column:1/-1}
+      }
+      @media (max-width:860px){
+        body .hdg2{grid-template-columns:1fr}
+        body .container{grid-template-columns:1fr}
+      }
+      @media (max-width:640px){
+        body .box1 .view{grid-template-columns:1fr}
+        body .box1 .view>.block:nth-child(n){grid-column:1/-1}
+        body .car .contentt{grid-template-columns:1fr}
+        body .car .contentt1:nth-child(2){justify-self:center}
+        body .hero-section{padding:50px 16px 100px}
+        body .hero-section .hero-content{border-radius:26px}
+        body .hero-section .button44.type1{width:100%}
+        .hero-content>a[data-aos]{display:block}
+        body .mainfooter69{border-radius:32px 32px 0 0}
+      }
+      @media (max-height:640px){
+        .hero-scroll{display:none}
+      }
+
+      /* =====================================================================
+         REDUCED MOTION
+         ===================================================================== */
+      @media (prefers-reduced-motion:reduce){
+        html{scroll-behavior:auto}
+        .hero-orb,.hero-float span,.hero-scroll span,.hero-badge .dot,
+        body .hero-section .hero-content h1 span,
+        body .boss::before,body .boss::after,
+        body .car #heading1::before,body .mainfooter69::before,
+        body .car .contentt .contentt2:focus{animation:none}
+        body .box1 .hdg1:hover,body .hdg2 .a:hover,
+        body .container :is(.card,.card1,.card2,.card11):hover{transform:none}
+      }
+    </style>
+   </head>
+<body>
+
+
+  <!-- navbar -->
+
+  <nav>
+    <div class="navbar">
+      <i class='bx bx-menu'></i>
+      <div class="logo"><a href="./index.html"><img src="./images/logo.svg" alt=""></a></div>
+      <div class="nav-links">
+        <div class="sidebar-logo">
+          <span class="logo-img"><a href="./index.html"><img src="./images/logo.svg" alt=""></a></span>
+          <i class='bx bx-x' ></i>
+        </div>
+        <ul class="links">
+          <li>
+            <a href="./calculations.html">Calculations</a>
+            <i class='bx bxs-chevron-down bhindi tomato '></i>
+            <ul class="faraz bottle">
+              <li><a href="./area.html">Area</a></li>
+                  <li><a href="./length.html">Length</a></li>
+                  <li><a href="./volume.html">Volume</a></li>
+                  <li><a href="./temperature.html">Temperature</a></li>
+                  <li><a href="./mass.html">Mass</a></li>
+                  <li><a href="./currency.html">Currency</a></li>
+            </ul>
+          </li>
+          <li><a href="./history.html">History</a></li>
+          <li><a href="./articles.html">Articles</a></li>
+          <li><a href="./about.html">About Us</a></li>
+          <li><a href="./faq.html">FAQs</a></li>
+          <li><a href="./contact.html">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- End of navbar -->
+
+
+
+
+  <!-- Header -->
+
+  <header class="homeheader">
+
+  <!-- decorative ambient glows + floating unit chips (aria-hidden, purely visual) -->
+  <div class="hero-aurora" aria-hidden="true">
+    <span class="hero-orb orb-a"></span>
+    <span class="hero-orb orb-b"></span>
+    <span class="hero-orb orb-c"></span>
+  </div>
+  <div class="hero-float hf-1" aria-hidden="true"><span><b>1 km</b> = 0.62 mi</span></div>
+  <div class="hero-float hf-2" aria-hidden="true"><span><b>100 °C</b> = 212 °F</span></div>
+  <div class="hero-float hf-3" aria-hidden="true"><span><b>1 kg</b> = 2.20 lb</span></div>
+  <div class="hero-float hf-4" aria-hidden="true"><span><b>1 L</b> = 0.26 gal</span></div>
+
+  <div class="hero-section" >
+    <div class="hero-content" data-aos="zoom-in" data-aos-duration="900">
+      <span class="hero-badge" data-aos="fade-up" data-aos-delay="100"><span class="dot"></span>Free online unit converter</span>
+      <h1 data-aos="fade-up" data-aos-delay="150">Convert Any Unit,<br><span>Anywhere—Instantly!</span></h1>
+      <p data-aos="fade-up" data-aos-delay="250">Whether it's kilometers to miles or grams to ounces, our easy-to-use tool lets you convert any metric effortlessly.</p>
+      <a href="./calculations.html" data-aos="fade-up" data-aos-delay="350">
+        <button class="button44 type1">
+          <span class="btn-txt">Convert</span>
+          <i data-lucide="arrow-right"></i>
+        </button>
+      </a>
+      <ul class="hero-chips" data-aos="fade-up" data-aos-delay="450">
+        <li><i data-lucide="check"></i>100% Free</li>
+        <li><i data-lucide="check"></i>Instant results</li>
+        <li><i data-lucide="check"></i>Mobile-friendly</li>
+      </ul>
+    </div>
+  </div>
+
+  <a class="hero-scroll" href="#why-us" aria-label="Scroll to features"><span></span></a>
+  </header>
+
+
+  <!-- End of header -->
+
+  <!-- Section 1 -->
+
+  <section class="sec1" id="why-us">
+    <div class="box1" data-aos="fade-in">
+      <div class="view">
+        <div class="block" data-aos="fade-up">
+      <h1>Why Our Converter?</h1>
+        </div>
+        <div class="block" data-aos="fade-up">
+      <div class="hdg1">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="layers"></i></span>
+        <h2>Wide range of Units:</h2>
+        <p>Convert length, weight, volume, temperature, and more.</p>
+      </div>
+        </div>
+        <div class="block" data-aos="fade-up" data-aos-delay="100">
+      <div class="hdg1">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="mouse-pointer-click"></i></span>
+        <h2>Simple Interface:</h2>
+        <p>No complicated menus or options—just input your value and get an instant result.</p>
+      </div>
+        </div>
+        <div class="block" data-aos="fade-up">
+      <div class="hdg1">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="gift"></i></span>
+        <h2>100% Free: </h2>
+        <p>Use the converter anytime, anywhere, with no subscription required.</p>
+      </div>
+        </div>
+        <div class="block" data-aos="fade-up" data-aos-delay="100">
+      <div class="hdg1">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="target"></i></span>
+        <h2>Accurate Results:</h2>
+        <p>Get precise conversions using trusted formulas and standards.</p>
+      </div>
+        </div>
+        <div class="block" data-aos="fade-up" data-aos-delay="200">
+      <div class="hdg1">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="smartphone"></i></span>
+        <h2>Mobile-Friendly:</h2>
+        <p>Perfect for on-the-go conversions while traveling, cooking, or learning.</p>
+      </div>
+        </div>
+        <div class="block" data-aos="fade-up">
+      <button>
+        <a href="./calculations.html">Start Using the Tool <i class='bx bxs-chevron-right'></i></a>
+      </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- End of section 1 -->
+
+  <!-- Section 2 -->
+<div class="block" data-aos="fade-up">
+  <h1 class="sec2H">How it Works</h1>
+</div>
+<div class="block">
+  <section class="sec2">
+      <div class="hdg2">
+        <div class="a" data-aos="fade-up">
+          <span class="step-no" aria-hidden="true">01</span>
+          <span class="fx-ic" aria-hidden="true"><i data-lucide="keyboard"></i></span>
+          <h3>User Input</h3>
+          <p>Metric conversion websites allow users to input measurements like length, weight, or temperature and instantly convert them between systems. They are useful for professionals, and travelers needing quick, accurate results.</p>
+        </div>
+        <div class="a" data-aos="fade-up" data-aos-delay="100">
+          <span class="step-no" aria-hidden="true">02</span>
+          <span class="fx-ic" aria-hidden="true"><i data-lucide="cpu"></i></span>
+          <h3>Automated Process</h3>
+          <p>After inputting the values, the tool uses predefined algorithms and conversion factors to calculate the result. It applies the appropriate mathematical formula to convert between units, such as multiplying or dividing by a constant factor.</p>
+        </div>
+        <div class="a" data-aos="fade-up" data-aos-delay="200">
+          <span class="step-no" aria-hidden="true">03</span>
+          <span class="fx-ic" aria-hidden="true"><i data-lucide="badge-check"></i></span>
+          <h3>Accurate Output</h3>
+          <p>Metric conversion tools ensure precision by relying on standard conversion factors that are universally accepted. Whether converting distance, weight, or temperature, the tool delivers accurate and consistent results.</p>
+        </div>
+    </div>
+  </section>
+</div>
+
+  <!-- End of section 2 -->
+
+  <!-- Cards -->
+
+  <div class="container">
+    <div class="block1" data-aos="fade-up">
+      <div class="card">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="zap"></i></span>
+        <h2>Accuracy & Speed:</h2>
+        <p>Get fast and accurate conversions across hundreds of units.</p>
+      </div>
+    </div>
+    <div class="block3" data-aos="fade-up" data-aos-delay="100">
+      <div class="card1">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="arrow-left-right"></i></span>
+        <h2>Versatile Conversion Types:</h2>
+        <p>Convert between lengths, weights, temperatures and volumes.</p>
+      </div>
+    </div>
+    <div class="block1" data-aos="fade-up">
+      <div class="card2">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="smartphone"></i></span>
+        <h2>Mobile-Friendly:</h2>
+        <p>Access it anytime, anywhere, in whatever place on any device.</p>
+      </div>
+    </div>
+    <div class="block3" data-aos="fade-up" data-aos-delay="100">
+      <div class="card11">
+        <span class="fx-ic" aria-hidden="true"><i data-lucide="sliders-horizontal"></i></span>
+        <h2>Custom Units:</h2>
+        <p>Support for custom unit for the definitions and conversions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- End of cards -->
+
+  <!-- Demo tool -->
+<div class="block" data-aos="fade-up">
+        <h1 class="sec2H1">Our Demo Tool</h1>
+</div>
+<div class="block" data-aos="zoom-in">
+  <div class="boss">
+    <div class="car">
+        <h1 id="heading1">Unit Converter</h1>
+      <div class="contentt">
+          <div class="contentt1">
+              <label for="feet">Feet</label><br>
+              <input type="Number" value="1" id="feet" class="contentt2" step="any" inputmode="decimal">
+          </div>
+          <div class="contentt1">
+              <h1>=</h1>
+          </div>
+          <div class="contentt1">
+              <label for="inch">Inches</label><br>
+              <input type="Number" value="12" id="inch" class="contentt2" step="any" inputmode="decimal">
+          </div>
+      </div>
+
+      <!-- quick presets + live readout (additive; original inputs and ids untouched) -->
+      <div class="demo-presets" role="group" aria-label="Quick values in feet">
+        <button type="button" data-ft="1">1 ft</button>
+        <button type="button" data-ft="5">5 ft</button>
+        <button type="button" data-ft="10">10 ft</button>
+        <button type="button" data-ft="100">100 ft</button>
+      </div>
+      <div class="demo-result" aria-live="polite">
+        <span>Result</span>
+        <strong id="demoResult">1 ft = 12 in</strong>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- End of demo tool -->
+  <div class="scroll-watcher"></div>
+
+  <!-- Footer -->
+
+  <footer class="mainfooter69">
+
+    <section class="topfooter69">
+        <div class="logobox69" data-aos="fade-up">
+                <h1 class="logotitle">Metric Conversion</h1>
+            <p>
+              "Convert units effortlessly with our accurate metric converter."
+            </p>
+        </div>
+
+        <div class="labelfear" data-aos="fade-up" data-aos-delay="100">
+            <h3 class="labelfear69">Quick Links</h3>
+            <ul class="menubox6969">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./calculations.html">Calculations</a></li>
+                <li><a href="./faq.html">FAQs</a></li>
+                <li><a href="./about.html">About Us</a></li>
+                <li><a href="./contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+
+        <div class="labelfear" data-aos="fade-up" data-aos-delay="200">
+            <h3 class="labelfear69">Contact</h3>
+            <ul class="menubox6969">
+                <li><a href="#">Karachi, Pakistan</a></li>
+                <li><a href="mailto:ourteam@gmail.com">ourteam@gmail.com</a></li>
+                <li><a href="tel:+023302199842">+92 3302199842</a></li>
+            </ul>
+        </div>
+
+        <div class="labelfear newsletterbox" data-aos="fade-up" data-aos-delay="300">
+            <h3 class="labelfear69">Newsletter</h3>
+            <p class="newslettermessage">
+                Subscribe to our newsletter to get
+                your news, update, and special offers
+            </p>
+            <form class="inputbox69">
+              <input class="emailinput69 redgreen" placeholder="Enter your email" type="email" name="email"
+              pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+              <button class="sendbtn69" type="submit">
+                  <i class='bx bxs-send'></i>
+              </button>
+          </form>
+        </div>
+
+    </section>
+
+    <section class="bottomfooter">
+
+        <p class="copyrighttxt69">
+            © 2024 Metric Conversion. All Rights Reserved.
+        </p>
+        <div class="socialmedia">
+          <ul class="hell">
+            <li>
+              <a href="#">
+                <i class="fab fa-facebook-f icon"></i>    </a>
+            </li>
+            <li>
+              <a href="#"><i class="fab fa-twitter icon"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="fab fa-linkedin-in icon"></i></a></li>
+            <li>
+              <a href="#"><i class="fab fa-google-plus-g icon"></i></a></li>
+          </ul>
+        </div>
+
+    </section>
+
+</footer>
+
+<!-- End of footer -->
+
+<script>
+  // Demo tool
+
+var feet = document.getElementById('feet');
+var inch = document.getElementById('inch');
+
+feet.addEventListener('input', function(){
+    let f = this.value;
+    let i = f*12;
+
+    inch.value = i;
+});
+
+inch.addEventListener('input' , function(){
+    let i = this.value;
+    let f = i/12;
+
+    if(!Number.isInteger(f)){
+        f = f.toFixed(2);
+    };
+    feet.value = f;
+
+});
+
+// End of demo tool
+</script>
+
+
+
+
+
+
+
+
+
+  <!-- Icon + animation libraries (CDN) -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <!-- Landing page enhancements -->
+  <script>
+  (() => {
+    'use strict';
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const $  = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+    /* ---------- Icons (Lucide). If the CDN is unreachable, drop the empty tiles ---------- */
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+      window.lucide.createIcons();
+    } else {
+      $$('.fx-ic').forEach(el => el.remove());
+    }
+
+    /* ---------- Animate On Scroll ---------- */
+    if (window.AOS) {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out-cubic',
+        once: true,
+        offset: 70,
+        disable: () => reduceMotion
+      });
+      // After the entrance finishes, switch the element to quick hover transitions
+      document.addEventListener('aos:in', (e) => {
+        const node = e.detail;
+        if (node && node.classList) setTimeout(() => node.classList.add('aos-settled'), 1700);
+      });
+      window.addEventListener('load', () => AOS.refresh());
+    } else {
+      // Library failed to load: never leave content hidden
+      $$('[data-aos]').forEach(el => el.removeAttribute('data-aos'));
+    }
+
+    /* ---------- Navbar: glass effect once the page is scrolled ---------- */
+    const nav = $('nav');
+    const onNavScroll = () => { if (nav) nav.classList.toggle('is-scrolled', window.scrollY > 24); };
+    onNavScroll();
+    window.addEventListener('scroll', onNavScroll, { passive: true });
+
+    /* ---------- Hero parallax (mouse + scroll) ---------- */
+    const hero = $('.homeheader');
+    if (hero && !reduceMotion) {
+      let tx = 0, ty = 0, cx = 0, cy = 0, raf = null, ticking = false;
+
+      const ease = () => {
+        cx += (tx - cx) * 0.08;
+        cy += (ty - cy) * 0.08;
+        hero.style.setProperty('--px', cx.toFixed(3));
+        hero.style.setProperty('--py', cy.toFixed(3));
+        if (Math.abs(tx - cx) > 0.001 || Math.abs(ty - cy) > 0.001) {
+          raf = requestAnimationFrame(ease);
+        } else {
+          raf = null;
+        }
+      };
+      const kick = () => { if (!raf) raf = requestAnimationFrame(ease); };
+
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        hero.addEventListener('pointermove', (e) => {
+          const r = hero.getBoundingClientRect();
+          tx = (e.clientX - r.left) / r.width - 0.5;
+          ty = (e.clientY - r.top) / r.height - 0.5;
+          kick();
+        }, { passive: true });
+        hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
+      }
+
+      window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = Math.min(window.scrollY, window.innerHeight * 1.2);
+          hero.style.setProperty('--sy', y.toFixed(1));
+          ticking = false;
+        });
+      }, { passive: true });
+    }
+
+    /* ---------- Cursor-following spotlight on tiles, steps and cards ---------- */
+    const spotlightSel = '.hdg1, .hdg2 .a, .card, .card1, .card2, .card11';
+    document.addEventListener('pointermove', (e) => {
+      const t = e.target.closest ? e.target.closest(spotlightSel) : null;
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      t.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      t.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+
+    /* ---------- Demo dashboard: presets + live readout ----------
+       Hooks into the existing #feet / #inch inputs; their original handlers still run first. */
+    const feetEl = $('#feet');
+    const inchEl = $('#inch');
+    const outEl  = $('#demoResult');
+
+    if (feetEl && inchEl && outEl) {
+      const chips = $$('.demo-presets button');
+      const fmt = (n) => String(parseFloat(n.toFixed(4)));
+
+      const render = (source) => {
+        const src = source === 'inch' ? inchEl : feetEl;
+        const v = parseFloat(src.value);
+
+        if (!Number.isFinite(v)) {
+          outEl.textContent = 'Enter a value';
+          chips.forEach(c => c.classList.remove('is-active'));
+          return;
+        }
+
+        if (source === 'inch') {
+          const f = v / 12;
+          feetEl.value = fmt(f);                       // cleaner precision than toFixed(2)
+          outEl.textContent = `${fmt(v)} in = ${fmt(f)} ft`;
+        } else {
+          const i = v * 12;
+          inchEl.value = fmt(i);                       // avoids 1.2000000000000002-style output
+          outEl.textContent = `${fmt(v)} ft = ${fmt(i)} in`;
+        }
+
+        chips.forEach(c => c.classList.toggle('is-active', source !== 'inch' && Number(c.dataset.ft) === v));
+
+        outEl.classList.remove('pop');
+        void outEl.offsetWidth;                         // restart the animation
+        outEl.classList.add('pop');
+      };
+
+      feetEl.addEventListener('input', () => render('feet'));
+      inchEl.addEventListener('input', () => render('inch'));
+
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          feetEl.value = chip.dataset.ft;
+          feetEl.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+      });
+
+      render('feet');
+    }
+  })();
+  </script>
+
+  <script src="./javascript/script.js"></script>
+</body>
+</html>
